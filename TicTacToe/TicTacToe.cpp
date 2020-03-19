@@ -94,7 +94,6 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //
 //        In this function, we save the instance handle in a global variable and
 //        create and display the main program window.
-//
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
 	hInst = hInstance; // Store instance handle in our global variable
