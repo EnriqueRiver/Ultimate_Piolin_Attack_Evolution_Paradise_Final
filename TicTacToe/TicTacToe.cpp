@@ -89,7 +89,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //   FUNCTION: InitInstance(HINSTANCE, int)
 //
 //   PURPOSE: Saves instance handle and creates main window
-//
+// walterbranch
 //   COMMENTS:
 //
 //        In this function, we save the instance handle in a global variable and
