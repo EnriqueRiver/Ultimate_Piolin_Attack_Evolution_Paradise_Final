@@ -84,7 +84,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 
 	return RegisterClassExW(&wcex);
 }
-
+//fkjñdhsjkfhsapdhfje hfhweufh wefhiuawehfkjdsjhfhajpsfjajfbjdfsahkjdfjhdfsjpghpdgfshiiofbsdufbdsj
 //
 //   FUNCTION: InitInstance(HINSTANCE, int)
 //
