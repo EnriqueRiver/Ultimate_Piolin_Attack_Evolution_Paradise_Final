@@ -94,6 +94,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //
 //        In this function, we save the instance handle in a global variable and
 //        create and display the main program window.
+//
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
 	hInst = hInstance; // Store instance handle in our global variable
@@ -186,7 +187,7 @@ int GetTriplets(int wins[3])
 }
 //  FUNCTION: WndProc(HWND, UINT, WPARAM, LPARAM)
 //
-//  PURPOSE: Processes messages for the main window.
+//  PURPOSe: Processes messages for the main window.
 //
 //  WM_COMMAND  - process the application menu
 //  WM_PAINT    - Paint the main window
