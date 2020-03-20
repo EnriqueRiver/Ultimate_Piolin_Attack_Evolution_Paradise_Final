@@ -86,6 +86,7 @@ void Board::DrawPiolinColor(RECT* rc, Gdiplus::Graphics* graphics,HDC hdc)
 		
 		if (level1 == true)
 		{
+			GenerateNewLevel();
 			score = 0;
 			level2 = true;
 			level1 = false;
@@ -99,7 +100,6 @@ void Board::DrawPiolinColor(RECT* rc, Gdiplus::Graphics* graphics,HDC hdc)
 		}
 		if (level3 == true && score == 50)
 		{
-			GenerateNewLevel();
 			score = 0;
 			level3 = false;
 			Endgame = true;
