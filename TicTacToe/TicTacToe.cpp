@@ -183,6 +183,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				if (moves.size() >= 2)
 				{
 					gameB.PlayerMove(&moves);
+					InvalidateRect(hWnd, nullptr, false);
 
 				}
 			}
@@ -212,14 +213,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		if (gameB.Endgame == true)
 		{
 			gameB.DrawBoard(hWnd, hdc, &rc, &gf, true);
+			InvalidateRect(hWnd, nullptr, false);
 		}
-		if (paint == false && gameB.Endgame == false)
-		gameB.DrawBoard(hWnd, hdc, &rc, &gf, false);
+		if (paint == false && gameB.Endgame == false) {
+			gameB.DrawBoard(hWnd, hdc, &rc, &gf, false);
+			InvalidateRect(hWnd, nullptr, false);
+		}
 
 		if (paint == true)
 		{
 			gameB.DrawBoard(hWnd, hdc, &rc, &gf, true);
 			DestroyIcon(hIcon5);
+
 			// TODO: Add any drawing code that uses hdc here...
 			//if (GetGameBoardRect(hWnd, &rc))
 			//{
