@@ -321,13 +321,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 						int v1 = rand() % 4;
 						if (v1 == 0)
-							Draw(hdc, rect.left + CELL_SIZE / 2 - 16, rect.top + CELL_SIZE / 2 - 16, L"piolin-corazon.jpg");
+							Draw(hdc, rect.left + CELL_SIZE / 2 - 40, rect.top + CELL_SIZE / 2 - 40, L"piolincorazon.png");
 						if (v1 == 1)
-							Draw(hdc, rect.left + CELL_SIZE / 2, rect.top + CELL_SIZE / 2, L"piolinkarate.png");
+							Draw(hdc, rect.left + CELL_SIZE / 2 - 40, rect.top + CELL_SIZE / 2 - 40, L"piolinkarate.png");
 						if (v1 == 2)
-							Draw(hdc, rect.left + CELL_SIZE / 2 - 16, rect.top + CELL_SIZE / 2 - 16, L"piolinssj.png");
+							Draw(hdc, rect.left + CELL_SIZE / 2 - 40, rect.top + CELL_SIZE / 2 - 40, L"piolinssj.png");
 						if (v1 == 3)
-							Draw(hdc, rect.left + CELL_SIZE / 2 - 16, rect.top + CELL_SIZE / 2 - 16, L"piolinmamado.png");
+							Draw(hdc, rect.left + CELL_SIZE / 2 - 40, rect.top + CELL_SIZE / 2 - 40, L"piolinmamado.png");
 						// int GetNumber(HWND hWnd, int x, int y)
 
 
