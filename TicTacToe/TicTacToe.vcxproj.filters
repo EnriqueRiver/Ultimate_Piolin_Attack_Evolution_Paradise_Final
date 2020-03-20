@@ -30,7 +30,7 @@
     <ClInclude Include="Piolin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Board.h">
+    <ClInclude Include="BoardPiolin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -41,7 +41,7 @@
     <ClCompile Include="Piolin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Board.cpp">
+    <ClCompile Include="BoardPiolin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

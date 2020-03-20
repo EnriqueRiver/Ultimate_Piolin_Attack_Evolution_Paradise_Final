@@ -5,7 +5,7 @@
 #include "TicTacToe.h"
 #include "windowsx.h"
 #include <gdiplus.h>
-#include "Board.h"
+#include "BoardPiolin.h"
 #include <vector>
 
 
@@ -118,7 +118,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	return TRUE;
 }
 
-//const int CELL_SIZE = 100;
+//const int CellSize = 100;
 //
 HICON hIcon5;
 bool paint = false;
@@ -126,7 +126,7 @@ bool restart = false;
 HWND button;
 
 
-Board gameB;
+BoardPiolin gameB;
 vector<int> moves;
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -164,7 +164,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_LBUTTONDOWN: {
 		short xPos = GET_X_LPARAM(lParam);
 		short yPos = GET_Y_LPARAM(lParam);
-		int index = gameB.GetNumber(hWnd, xPos, yPos);
+		int index = gameB.GetNumPiolin(hWnd, xPos, yPos);
 		HDC hdc = GetDC(hWnd);
 		if (hdc != NULL)
 		{
@@ -174,7 +174,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			if (paint == false && index == -1)
 			{
 				paint = true;
-				gameB.GenerateNewLevel();
+				gameB.PiolinGenerator();
 
 			}
 			if (index != -1)
@@ -182,7 +182,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				moves.push_back(index);
 				if (moves.size() >= 2)
 				{
-					gameB.PlayerMove(&moves);
+					gameB.MovePiolin(&moves);
 					InvalidateRect(hWnd, nullptr, false);
 
 				}
@@ -196,8 +196,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 		MINMAXINFO* pMinMax = (MINMAXINFO*)lParam;
 		if (pMinMax != nullptr) {
-			pMinMax->ptMinTrackSize.x = gameB.GetCellSize() * 5;
-			pMinMax->ptMinTrackSize.y = gameB.GetCellSize() * 5;
+			pMinMax->ptMinTrackSize.x = gameB.GetCellPiolinSize() * 5;
+			pMinMax->ptMinTrackSize.y = gameB.GetCellPiolinSize() * 5;
 		}
 
 
@@ -212,21 +212,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		Gdiplus::Graphics gf(hdc);
 		if (gameB.Endgame == true)
 		{
-			gameB.DrawBoard(hWnd, hdc, &rc, &gf, true);
-			InvalidateRect(hWnd, nullptr, false);
+			gameB.DrawBoardPiolin(hWnd, hdc, &rc, &gf, true);
+			
 		}
 		if (paint == false && gameB.Endgame == false) {
-			gameB.DrawBoard(hWnd, hdc, &rc, &gf, false);
+			gameB.DrawBoardPiolin(hWnd, hdc, &rc, &gf, false);
 			InvalidateRect(hWnd, nullptr, false);
 		}
 
 		if (paint == true)
 		{
-			gameB.DrawBoard(hWnd, hdc, &rc, &gf, true);
+			gameB.DrawBoardPiolin(hWnd, hdc, &rc, &gf, true);
 			DestroyIcon(hIcon5);
-
 			// TODO: Add any drawing code that uses hdc here...
-			//if (GetGameBoardRect(hWnd, &rc))
+			//if (PiolinBoardRect(hWnd, &rc))
 			//{
 			//	FillRect(hdc, &rc, (HBRUSH)GetStockObject(WHITE_BRUSH));
 			//	Rectangle(hdc, rc.left, rc.top, rc.right, rc.bottom);
@@ -239,19 +238,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				for (index; index < 64; index++)
 				{
 					RECT rect;
-					//if (GetCell(hWnd, index, &rect))
+					//if (GetCellPiolin(hWnd, index, &rect))
 					//{
 
 					//	int v1 = rand() % 4;
 					//	if (v1 == 0)
-					//		Draw(hdc, rect.left + CELL_SIZE / 2 - 40, rect.top + CELL_SIZE / 2 - 40, L"piolincorazon.png");
+					//		Draw(hdc, rect.left + CellSize / 2 - 40, rect.top + CellSize / 2 - 40, L"piolincorazon.png");
 					//	if (v1 == 1)
-					//		Draw(hdc, rect.left + CELL_SIZE / 2 - 40, rect.top + CELL_SIZE / 2 - 40, L"piolinkarate.png");
+					//		Draw(hdc, rect.left + CellSize / 2 - 40, rect.top + CellSize / 2 - 40, L"piolinkarate.png");
 					//	if (v1 == 2)
-					//		Draw(hdc, rect.left + CELL_SIZE / 2 - 40, rect.top + CELL_SIZE / 2 - 40, L"piolinssj.png");
+					//		Draw(hdc, rect.left + CellSize / 2 - 40, rect.top + CellSize / 2 - 40, L"piolinssj.png");
 					//	if (v1 == 3)
-					//		Draw(hdc, rect.left + CELL_SIZE / 2 - 40, rect.top + CELL_SIZE / 2 - 40, L"piolinmamado.png");
-					//	// int GetNumber(HWND hWnd, int x, int y)
+					//		Draw(hdc, rect.left + CellSize / 2 - 40, rect.top + CellSize / 2 - 40, L"piolinmamado.png");
+					//	// int GetNumPiolin(HWND hWnd, int x, int y)
 
 
 					//}
@@ -260,9 +259,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			//for (unsigned short i = 0; i < 9; i++)
 			//{
 			//	//verticales
-			//	DrawLine(hdc, rc.left + CELL_SIZE * i, rc.top, rc.left + CELL_SIZE * i, rc.bottom);
+			//	DrawPiolinLine(hdc, rc.left + CellSize * i, rc.top, rc.left + CellSize * i, rc.bottom);
 			//	//horizontales
-			//	DrawLine(hdc, rc.left, rc.top + CELL_SIZE * i, rc.right, rc.top + CELL_SIZE * i);
+			//	DrawPiolinLine(hdc, rc.left, rc.top + CellSize * i, rc.right, rc.top + CellSize * i);
 			//}
 
 
