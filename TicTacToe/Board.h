@@ -12,14 +12,12 @@ using std::list; using std::vector;
 class Board
 {
 private:
-	const int CELL_SIZE = 100;
+	const int CELL_SIZE = 40;
 	const int CELL_COUNT = 8;
 	vector<vector<Piolin>> Piolines;
 
 public:
 	Board();
-
-	void Draw(HDC hdc, int xpos, int ypos, Gdiplus::Bitmap bmp);
 
 	void DrawBoard(HWND hWnd, HDC hdc, RECT* rc, Gdiplus::Graphics* graphics);
 
@@ -50,7 +48,7 @@ public:
 	void PlayerMove(vector<int>* moves);
 
 private:
-	void DrawPiolinColor(RECT* rc, Gdiplus::Graphics* graphics,HDC hdc);
+	void DrawPiolinColor(RECT* rc, Gdiplus::Graphics* graphics);
 
 	void DestoyPiolin(int, int, Piolin*, Piolin*);
 
