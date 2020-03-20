@@ -12,6 +12,7 @@ Board::Board()
 	GenerateNewLevel();
 }
 
+
 void Board::DrawBoard(HWND hWnd, HDC hdc, RECT* rc, Gdiplus::Graphics* graphics,bool escena)
 {
 	if (!escena) {
@@ -400,31 +401,6 @@ void Board::PlayerMove(vector<int>* moves)
 
 }
 
-void Board::ConvertirPiolines(int x, int y, list<Piolin*> list)
-{
-	if (x >= 0 && y >= 0)
-		if (x < CELL_COUNT && y < CELL_COUNT)
-		{
-			try {
-				if (y - 1 != 0) {
-					//for (Piolin* piolin : list)
-					//{
-					//	piolin->SetType(GetPiolinAt(x, y - 1)->GetType());
-					//}
-					Piolin* pio = GetPiolinAt(x, y);
-					char piolintype;
-					piolintype = GetPiolinAt(x, y - 1)->GetType();
-					pio->SetType(piolintype);
-					ConvertirPiolines(x, y - 1, list);
-
-				}
-			}
-			catch (std::exception& e)
-			{
-				e.what();
-			}
-		}
-}
 
 void Board::DestoyPiolin(int x, int y, Piolin* pio1, Piolin* pio2)
 {
@@ -433,9 +409,7 @@ void Board::DestoyPiolin(int x, int y, Piolin* pio1, Piolin* pio2)
 	char m = pio2->GetType();
 	Piolin* piolin1 = GetPiolinAt(x, y);
 	Piolin* piolin2 = GetPiolinAt(x, y);
-	//if (pio1->GetType() != piolin1->GetType())
-	//	if (pio2->GetType() != piolin2->GetType())
-			//DestoyPiolin(x, y, pio1, pio2);
+
 	pio1->SetType(n);
 	pio2->SetType(m);
 

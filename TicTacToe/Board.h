@@ -53,7 +53,6 @@ public:
 
 	void PlayerMove(vector<int>* moves);
 
-	void ConvertirPiolines(int x, int y, list<Piolin*> list);
 
 private:
 	void DrawPiolinColor(RECT* rc, Gdiplus::Graphics* graphics, HDC hdc);

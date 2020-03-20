@@ -30,6 +30,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
 	// TODO: Place code here.
+	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+	ULONG_PTR gdiplusToken;
+	Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
 
 	// Initialize global strings
 	LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
@@ -43,9 +46,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	}
 
 	HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_TICTACTOE));
-	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
-	ULONG_PTR gdiplusToken;
-	Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
 	MSG msg;
 
 	// Main message loop:
@@ -172,6 +172,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			WCHAR temp[100];
 			wsprintf(temp, L"[%d]", index);
 			TextOut(hdc, xPos, yPos, temp, lstrlen(temp));
+			if (paint == false && index == -1)
+			{
+				gameB.GenerateNewLevel();
+				paint = true;
+
+
+			}
+			if (paint == true)
+			{
+				if (index==-1)
+				{
+					
+				}
+			}
 			if (index != -1)
 			{
 				moves.push_back(index);
@@ -181,22 +195,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 				}
 			}
-			if (paint == true)
-			{
-				if (index==-1)
-				{
-					gameB.GenerateNewLevel();
-				}
-			}
 
-			if (paint == false && index == -1)
-			{
-				paint = true;
-
-			}
 		}
 		break;
 	}
+	
 	case WM_GETMINMAXINFO:
 	{
 		MINMAXINFO* pMinMax = (MINMAXINFO*)lParam;
@@ -215,12 +218,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		HDC hdc = BeginPaint(hWnd, &ps);
 		RECT rc;
 		Gdiplus::Graphics gf(hdc);
+<<<<<<< Updated upstream
 
+=======
+		gameB.DrawBoard(hWnd, hdc, &rc, &gf, true);
+		if (gameB.Endgame == true)
+		{
+			
+			gameB.DrawBoard(hWnd, hdc, &rc, &gf, true);
+		}
+		if (paint == false && gameB.Endgame == false)
+>>>>>>> Stashed changes
 		gameB.DrawBoard(hWnd, hdc, &rc, &gf, false);
 
 		if (paint == true)
 		{
-			gameB.DrawBoard(hWnd, hdc, &rc, &gf,true);
+			
 			DestroyIcon(hIcon5);
 			// TODO: Add any drawing code that uses hdc here...
 			//if (GetGameBoardRect(hWnd, &rc))
