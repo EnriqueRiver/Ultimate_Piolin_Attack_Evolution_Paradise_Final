@@ -6,7 +6,6 @@
 #include <vector>
 #include <gdiplus.h>
 
-
 using std::list; using std::vector;
 
 class Board
@@ -49,11 +48,14 @@ public:
 
 	void PlayerMove(vector<int>* moves);
 
+	void ConvertirPiolines(int x, int y, list<Piolin*> list);
+
 private:
 	void DrawPiolinColor(RECT* rc, Gdiplus::Graphics* graphics, HDC hdc);
 
 	void DestoyPiolin(int, int, Piolin*, Piolin*);
 
 	void UnSeePiolines();
+
 };
 

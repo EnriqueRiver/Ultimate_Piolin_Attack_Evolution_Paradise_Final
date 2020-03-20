@@ -270,8 +270,8 @@ int Board::EmptyNeighboards(int x, int y)
 {
 	if (y >= 0 && y < CELL_COUNT)
 	{
-		if (GetPiolinAt(x, y)->GetType() == '0')
-			return 1 + EmptyNeighboards(x, y - 1);
+			if (GetPiolinAt(x, y)->GetType() == '0')
+				return 1 + EmptyNeighboards(x, y - 1);
 	}
 
 	return 0;
@@ -303,26 +303,23 @@ void Board::PlayerMove(vector<int>* moves)
 
 		Piolin* pio1 = GetPiolinAt(c1X, c1Y);
 		Piolin* pio2 = GetPiolinAt(c2X, c2Y);
-
-		//Si estan contiguas
-		{
-			DestoyPiolin(c1X, c1Y, pio1, pio2);
-			DestoyPiolin(c2X, c2Y, pio1, pio2);
-
-		}
-
 		char n = pio1->GetType();
 		char m = pio2->GetType();
 
-		if (pio1->Contiguous(*pio2))
-		{
-			pio1 -> SetType(m);
-			pio2-> SetType(n);
-		}
+		//Si estan contiguas
+		if(c1X <= c2X + 1)
+			if(c1X >= c2X - 1)
+				if(c1Y <= c2Y + 1)
+					if (c1Y >= c2Y - 1) {
+						pio1->SetType(m);
+						pio2->SetType(n);
+						DestoyPiolin(c1X, c1Y, pio1, pio2);
+
+					}
 		else
 		{
-			pio1->SetType(m);
-			pio2->SetType(n);
+			pio1->SetType(n);
+			pio2->SetType(m);
 		}
 		pio1 = 0;
 		pio2 = 0;
@@ -333,13 +330,50 @@ void Board::PlayerMove(vector<int>* moves)
 
 }
 
+void Board::ConvertirPiolines(int x, int y, list<Piolin*> list)
+{
+	
+	
+	
+	if (x >= 0 && y >= 0)
+		if (x < CELL_COUNT && y < CELL_COUNT)
+		{
+			try {
+				if (y - 1 != 0) {
+					//for (Piolin* piolin : list)
+					//{
+					//	piolin->SetType(GetPiolinAt(x, y - 1)->GetType());
+					//}
+					Piolin* pio = GetPiolinAt(x, y);
+					char piolintype;
+					piolintype = GetPiolinAt(x, y - 1)->GetType();
+					pio->SetType(piolintype);
+					ConvertirPiolines(x, y - 1, list);
+
+				}
+			}
+			catch (std::exception& e)
+			{
+				e.what();
+			}
+		}
+}
+
 void Board::DestoyPiolin(int x, int y, Piolin* pio1, Piolin* pio2)
 {
 	//Swap;
-	//char n = pio1->GetType();
-	//char m = pio2->GetType();
-	//pio1->SetType(m);
-	//pio2->SetType(n);
+	char n = pio1->GetType();
+	char m = pio2->GetType();
+	Piolin* piolin1 = GetPiolinAt(x, y);
+	Piolin* piolin2 = GetPiolinAt(x, y);
+	pio1->SetType(n);
+	pio2->SetType(m);
+
+
+	if (pio1->GetType() == piolin1->GetType())
+		if (pio2->GetType() == piolin2->GetType())
+			DestoyPiolin(x, y, pio1, pio2);
+	
 
 	list<Piolin*> piolines = GetPartnerPiolin(x, y);
 	if (piolines.size() >= 3)
@@ -347,6 +381,7 @@ void Board::DestoyPiolin(int x, int y, Piolin* pio1, Piolin* pio2)
 		//Las marca como gems vacias - "Las elimina"
 		for (Piolin* piolin : piolines)
 		{
+			
 			piolin->SetType('0');
 		}
 
@@ -354,12 +389,14 @@ void Board::DestoyPiolin(int x, int y, Piolin* pio1, Piolin* pio2)
 		{
 			if (piolin->GetType() == '0')
 			{
+				//ConvertirPiolines(x, y);
 				MovePiolines(piolin->GetX(), piolin->GetY(), EmptyNeighboards(piolin->GetX(), piolin->GetY()));
 			}
 		}
 	}
 	else
 	{
+
 		//pio1->SetType(m);
 		//pio2->SetType(n);
 	}
