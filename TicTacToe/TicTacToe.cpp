@@ -149,6 +149,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_LBUTTONDOWN: {
 		short xPos = GET_X_LPARAM(lParam);
 		short yPos = GET_Y_LPARAM(lParam);
+		//Conseguimos el index del recuadro dependiendo de su x y y.
 		int index = GBPiolin.GetNumPiolin(hWnd, xPos, yPos);
 		HDC hdc = GetDC(hWnd);
 		if (hdc != NULL){
@@ -156,16 +157,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			//wsprintf(temp, L"[%d]", index);
 			//TextOut(hdc, xPos, yPos, temp, lstrlen(temp));
 
+			/*Este es el manejo de escenas por medio del click, cuando es verdadero crea el tablero*/
 			if (paint == false && index == -1){
 
 				paint = true;
 				GBPiolin.PiolinGenerator();
 			}
+			//Para saber cuando damos click dentro del tablero y almacenamos dos clicks para saber que mover.
 			if (index != -1){
 				moves.push_back(index);
 				if (moves.size() >= 2){
 
 					GBPiolin.MovePiolin(&moves);
+					//Crea un rectangulo que especifica que parte de la ventana se va a actuaizar.
 					InvalidateRect(hWnd, nullptr, false);
 
 				}
@@ -188,14 +192,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		HDC hdc = BeginPaint(hWnd, &ps);
 		RECT rc;
 		Gdiplus::Graphics gf(hdc);
+		//Este if checa si estamos en la escena Endgame
 		if (GBPiolin.Endgame == true){
-			GBPiolin.DrawBoardPiolin(hWnd, hdc, &rc, &gf, true);
-			
+			GBPiolin.DrawBoardPiolin(hWnd, hdc, &rc, &gf, true);	
 		}
+		//Este if dibua el menu.
 		if (paint == false && GBPiolin.Endgame == false) {
 			GBPiolin.DrawBoardPiolin(hWnd, hdc, &rc, &gf, false);
 			InvalidateRect(hWnd, nullptr, false);
 		}
+		//Este if dibuja el tablero.
 		if (paint == true){
 			GBPiolin.DrawBoardPiolin(hWnd, hdc, &rc, &gf, true);
 			int index = 0;
