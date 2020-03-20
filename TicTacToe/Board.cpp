@@ -16,7 +16,7 @@ void Board::DrawBoard(HWND hWnd, HDC hdc, RECT* rc, Gdiplus::Graphics* graphics,
 {
 	if (!escena) {
 		Gdiplus::Bitmap bmp1(L"PiolinMenu.png");
-		graphics->DrawImage(&bmp1, 0, 0, 1700, 1000);
+		graphics->DrawImage(&bmp1, 0, 0, 1600, 800);
 	}
 	else
 	{
@@ -42,8 +42,77 @@ void Board::DrawBoard(HWND hWnd, HDC hdc, RECT* rc, Gdiplus::Graphics* graphics,
 
 void Board::DrawPiolinColor(RECT* rc, Gdiplus::Graphics* graphics,HDC hdc)
 {
-	Gdiplus::Bitmap bmp1(L"PiolinMenu.png");
-	graphics->DrawImage(&bmp1,0,0, 1700, 1000);
+	Gdiplus::Bitmap bmp2(L"Restart.png");
+	graphics->DrawImage(&bmp2, 50, 50, 100, 100);
+	Gdiplus::Bitmap bmp3(L"Sin título-1.png");
+	graphics->DrawImage(&bmp3, 50, 150, 100, 100);
+	if (level1 == true)
+	{
+		Gdiplus::Bitmap level1(L"level1.png");
+		graphics->DrawImage(&level1, 1200, 50, 100, 100);
+	}
+	if (level2 == true)
+	{
+		Gdiplus::Bitmap level1(L"level2.png");
+		graphics->DrawImage(&level1, 1200, 50, 100, 100);
+	}
+	if (level3 == true)
+	{
+		Gdiplus::Bitmap level1(L"level3.png");
+		graphics->DrawImage(&level1, 1200, 50, 100, 100);
+	}
+	if (score == 10)
+	{
+		Gdiplus::Bitmap bmp4(L"10score.png");
+		graphics->DrawImage(&bmp4, 50, 250, 100, 100);
+	}
+	if (score == 20)
+	{
+		Gdiplus::Bitmap bmp4(L"20score.png");
+		graphics->DrawImage(&bmp4, 50, 250, 100, 100);
+	}
+	if (score == 30)
+	{
+		Gdiplus::Bitmap bmp4(L"30score.png");
+		graphics->DrawImage(&bmp4, 50, 250, 100, 100);
+	}
+	if (score == 40)
+	{
+		Gdiplus::Bitmap bmp4(L"40score.png");
+		graphics->DrawImage(&bmp4, 50, 250, 100, 100);
+	}
+	if (score == 50)
+	{
+		
+		if (level1 == true)
+		{
+			score = 0;
+			level2 = true;
+			level1 = false;
+		}
+		if (level2 == true && score == 50)
+		{
+			score = 0;
+			level3 = true;
+			level2 = false;
+		}
+		if (level3 == true && score == 50)
+		{
+			score = 0;
+			level3 = false;
+			Endgame = true;
+		}
+	}
+	if (Endgame == true)
+	{
+		Gdiplus::Bitmap bmp1(L"Endgame.png");
+		graphics->DrawImage(&bmp1, 0, 0, 1600, 800);
+	}
+	if (score == 0)
+	{
+		Gdiplus::Bitmap bmp4(L"0score.png");
+		graphics->DrawImage(&bmp4, 50, 250, 100, 100);
+	}
 	for (int x = 0; x < CELL_COUNT; x++)
 		for (int y = 0; y < CELL_COUNT; y++)
 		{
@@ -332,9 +401,6 @@ void Board::PlayerMove(vector<int>* moves)
 
 void Board::ConvertirPiolines(int x, int y, list<Piolin*> list)
 {
-	
-	
-	
 	if (x >= 0 && y >= 0)
 		if (x < CELL_COUNT && y < CELL_COUNT)
 		{
@@ -366,19 +432,16 @@ void Board::DestoyPiolin(int x, int y, Piolin* pio1, Piolin* pio2)
 	char m = pio2->GetType();
 	Piolin* piolin1 = GetPiolinAt(x, y);
 	Piolin* piolin2 = GetPiolinAt(x, y);
-	if (pio1->GetType() != piolin1->GetType())
-		if (pio2->GetType() != piolin2->GetType())
-			DestoyPiolin(x, y, pio1, pio2);
+	//if (pio1->GetType() != piolin1->GetType())
+	//	if (pio2->GetType() != piolin2->GetType())
+			//DestoyPiolin(x, y, pio1, pio2);
 	pio1->SetType(n);
 	pio2->SetType(m);
-
-
-
-	
 
 	list<Piolin*> piolines = GetPartnerPiolin(x, y);
 	if (piolines.size() >= 3)
 	{
+		score += 10;
 		//Las marca como gems vacias - "Las elimina"
 		for (Piolin* piolin : piolines)
 		{

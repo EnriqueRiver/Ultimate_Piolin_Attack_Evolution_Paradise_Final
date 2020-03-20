@@ -10,7 +10,6 @@
 
 
 #define MAX_LOADSTRING 100
-void Draw(HDC hdc, int xpos, int ypos, Gdiplus::Bitmap bmp);
 // Global Variables:
 HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
@@ -124,6 +123,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 HICON hIcon5;
 bool paint = false;
+bool restart = false;
 HWND button;
 
 
@@ -181,11 +181,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 				}
 			}
-			//if (paint == false && index == -1)
-			//{
-			//	paint = true;
+			if (paint == true)
+			{
+				if (index==-1)
+				{
+					gameB.GenerateNewLevel();
+				}
+			}
 
-			//}
+			if (paint == false && index == -1)
+			{
+				paint = true;
+
+			}
 		}
 		break;
 	}
@@ -207,7 +215,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		HDC hdc = BeginPaint(hWnd, &ps);
 		RECT rc;
 		Gdiplus::Graphics gf(hdc);
-		gameB.DrawBoard(hWnd, hdc, &rc, &gf, true);
+
+		gameB.DrawBoard(hWnd, hdc, &rc, &gf, false);
 
 		if (paint == true)
 		{

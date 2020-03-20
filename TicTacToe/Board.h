@@ -14,9 +14,14 @@ private:
 	const int CELL_SIZE = 100;
 	const int CELL_COUNT = 8;
 	vector<vector<Piolin>> Piolines;
-
+	bool level1 = true;
+	bool level2;
+	bool level3;
+	bool Endgame;
 public:
 	Board();
+
+	int score;
 
 	void Draw(HDC hdc, int xpos, int ypos, Gdiplus::Bitmap bmp);
 
