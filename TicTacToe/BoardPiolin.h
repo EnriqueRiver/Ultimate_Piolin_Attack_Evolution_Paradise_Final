@@ -31,7 +31,6 @@ public:
 	void DefinePiolin(RECT* rc, Gdiplus::Graphics* graphics, HDC hdc);
 
 	int GetNumPiolin(HWND hWnd, int x, int y);
-	BOOL GetCellPiolin(HWND hWnd, int index, RECT* pRect);
 	int GetCellPiolinSize();
 	int GetCellsPiolinLength();
 

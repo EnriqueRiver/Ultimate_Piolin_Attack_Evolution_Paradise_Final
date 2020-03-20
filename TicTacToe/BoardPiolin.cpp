@@ -1,6 +1,7 @@
 #include "BoardPiolin.h"
 #include <iostream>
 
+//Constructor, crea un array dinamico de vector<piolin> 
 BoardPiolin::BoardPiolin(){
 
 	Piolines = vector<vector<Piolin>>(CellsLength, vector<Piolin>(CellsLength));
@@ -14,6 +15,7 @@ BoardPiolin::BoardPiolin(){
 	PiolinGenerator();
 }
 
+//Generador de tipos genera el tipo de piolin al azar
 void BoardPiolin::PiolinGenerator(){
 
 	for (int x = 0; x < CellsLength; x++) {
@@ -24,6 +26,7 @@ void BoardPiolin::PiolinGenerator(){
 	}
 }
 
+//Dibuja el rectangulo de fondo.
 BOOL BoardPiolin::PiolinBoardRect(HWND hWnd, RECT* pRect){
 
 	RECT rc;
@@ -44,70 +47,89 @@ BOOL BoardPiolin::PiolinBoardRect(HWND hWnd, RECT* pRect){
 	SetRectEmpty(pRect);
 	return false;
 }
+
+//Dibujan las lineas que dividen el rectangulo y crean el tablero
 void BoardPiolin::DrawPiolinLine(HDC hdc, int x1, int y1, int x2, int y2){
 
 	MoveToEx(hdc, x1, y1, nullptr);
 	LineTo(hdc, x2, y2);
 }
+
+//Define todos los sprites de piolin y sprites tambien los maneja
 void BoardPiolin::DefinePiolin(RECT* rc, Gdiplus::Graphics* graphics,HDC hdc){
 
-	Gdiplus::Bitmap bmp2(L"Restart.png");
-	graphics->DrawImage(&bmp2, 50, 50, 100, 100);
-	Gdiplus::Bitmap bmp3(L"Sin título-1.png");
-	graphics->DrawImage(&bmp3, 50, 150, 100, 100);
-	if (level1 == true){
-		Gdiplus::Bitmap level1(L"level1.png");
-		graphics->DrawImage(&level1, 1200, 50, 100, 100);
-	}
-	if (level2 == true){
-		Gdiplus::Bitmap level1(L"level2.png");
-		graphics->DrawImage(&level1, 1200, 50, 100, 100);
-	}
-	if (level3 == true){
-		Gdiplus::Bitmap level1(L"level3.png");
-		graphics->DrawImage(&level1, 1200, 50, 100, 100);
-	}
-	if (score == 10){
-		Gdiplus::Bitmap bmp4(L"10score.png");
-		graphics->DrawImage(&bmp4, 50, 250, 100, 100);
-	}
-	if (score == 20){
-		Gdiplus::Bitmap bmp4(L"20score.png");
-		graphics->DrawImage(&bmp4, 50, 250, 100, 100);
-	}
-	if (score == 30){
-		Gdiplus::Bitmap bmp4(L"30score.png");
-		graphics->DrawImage(&bmp4, 50, 250, 100, 100);
-	}
-	if (score == 40){
-		Gdiplus::Bitmap bmp4(L"40score.png");
-		graphics->DrawImage(&bmp4, 50, 250, 100, 100);
-	}
-	if (score == 50){
-		
-		if (level1 == true){
-			PiolinGenerator();
-			score = 0;
-			level2 = true;
-			level1 = false;
-		}
-		if (level2 == true && score == 50){
-			PiolinGenerator();
-			score = 0;
-			level3 = true;
-			level2 = false;
-		}
-		if (level3 == true && score == 50){
-			score = 0;
-			level3 = false;
-			Endgame = true;
-		}
-	}
-	if (score == 0){
+	try {
 
-		Gdiplus::Bitmap bmp4(L"0score.png");
-		graphics->DrawImage(&bmp4, 50, 250, 100, 100);
+		Gdiplus::Bitmap bmp2(L"Restart.png");
+		graphics->DrawImage(&bmp2, 50, 50, 100, 100);
+		Gdiplus::Bitmap bmp3(L"Sin título-1.png");
+		graphics->DrawImage(&bmp3, 50, 150, 100, 100);
+		if (level1 == true) {
+			Gdiplus::Bitmap level1(L"level1.png");
+			graphics->DrawImage(&level1, 1200, 50, 100, 100);
+		}
+		if (level2 == true) {
+			Gdiplus::Bitmap level1(L"level2.png");
+			graphics->DrawImage(&level1, 1200, 50, 100, 100);
+		}
+		if (level3 == true) {
+			Gdiplus::Bitmap level1(L"level3.png");
+			graphics->DrawImage(&level1, 1200, 50, 100, 100);
+		}
+		if (score == 10) {
+			Gdiplus::Bitmap bmp4(L"10score.png");
+			graphics->DrawImage(&bmp4, 50, 250, 100, 100);
+		}
+		if (score == 20) {
+			Gdiplus::Bitmap bmp4(L"20score.png");
+			graphics->DrawImage(&bmp4, 50, 250, 100, 100);
+		}
+		if (score == 30) {
+			Gdiplus::Bitmap bmp4(L"30score.png");
+			graphics->DrawImage(&bmp4, 50, 250, 100, 100);
+		}
+		if (score == 40) {
+			Gdiplus::Bitmap bmp4(L"40score.png");
+			graphics->DrawImage(&bmp4, 50, 250, 100, 100);
+		}
 	}
+	catch (...)
+	{
+		return;
+	}
+	try {
+		if (score == 50) {
+
+			if (level1 == true) {
+				PiolinGenerator();
+				score = 0;
+				level2 = true;
+				level1 = false;
+			}
+			if (level2 == true && score == 50) {
+				PiolinGenerator();
+				score = 0;
+				level3 = true;
+				level2 = false;
+			}
+			if (level3 == true && score == 50) {
+				score = 0;
+				level3 = false;
+				Endgame = true;
+			}
+		}
+	}
+		catch (...)
+		{
+			return;
+		}
+		if (score == 0) {
+
+			Gdiplus::Bitmap bmp4(L"0score.png");
+			graphics->DrawImage(&bmp4, 50, 250, 100, 100);
+		}
+	
+
 	for (int x = 0; x < CellsLength; x++)
 		for (int y = 0; y < CellsLength; y++){
 
@@ -147,6 +169,7 @@ void BoardPiolin::DefinePiolin(RECT* rc, Gdiplus::Graphics* graphics,HDC hdc){
 			delete pio;
 		}
 }
+//Dibuja menu principal o dibuja los piolines dentro de las casillas
 void BoardPiolin::DrawBoardPiolin(HWND hWnd, HDC hdc, RECT* rc, Gdiplus::Graphics* graphics,bool escena){
 	if (!escena) {
 		Gdiplus::Bitmap bmp1(L"PiolinMenu.png");
@@ -166,7 +189,7 @@ void BoardPiolin::DrawBoardPiolin(HWND hWnd, HDC hdc, RECT* rc, Gdiplus::Graphic
 		DefinePiolin(rc, graphics, hdc);
 	}
 }
-
+//Retorna el numero (index) del piolin Super seleccionado
 int BoardPiolin::GetNumPiolin(HWND hWnd, int x, int y){
 	POINT p = { x,y };
 	RECT rc;
@@ -176,7 +199,8 @@ int BoardPiolin::GetNumPiolin(HWND hWnd, int x, int y){
 			y = p.y - rc.top;
 			int col = x / CellSize;
 			int row = y / CellSize;
-			return col + row * CellsLength;
+			int index = col + row * CellsLength;
+			return index;
 		}
 		else{
 			return -1;
@@ -184,37 +208,25 @@ int BoardPiolin::GetNumPiolin(HWND hWnd, int x, int y){
 	}
 	return -1;
 }
-BOOL BoardPiolin::GetCellPiolin(HWND hWnd, int index, RECT* pRect){
-	
-	RECT BoardPiolin;
-	SetRectEmpty(pRect);
 
-	if (index < 0 || index >(CellsLength * CellsLength) - 1)
-		return false;
-	if (PiolinBoardRect(hWnd, &BoardPiolin)){
-
-		int y = index / CellsLength;
-		int x = index % CellsLength;
-		pRect->left = BoardPiolin.left + x * CellSize;
-		pRect->top = BoardPiolin.top + y * CellSize;
-		pRect->right = pRect->left + CellSize;
-		pRect->bottom = pRect->top + CellSize;
-		return true;
-	}
-}
+//Retorna el tamano de celda 100x100
 int BoardPiolin::GetCellPiolinSize(){
 
 	return CellSize;
 }
+
+//Retorna el tamano del tablero 8x8
 int BoardPiolin::GetCellsPiolinLength(){
 
 	return CellsLength;
 }
-
+//Retorna un vector dinamico con Piolin, con sus coordenadas, retorna el objeto
 Piolin* BoardPiolin::GetPiolin(int x, int y){
 
 	return &Piolines[y][x];
 }
+
+//MEte todos los pioles del mismo tipo adyacentes a una misma lista, regresa la lista 
 list<Piolin*> BoardPiolin::GetPiolinPattern(int x, int y){
 
 	list<Piolin*> tmp;
@@ -223,6 +235,8 @@ list<Piolin*> BoardPiolin::GetPiolinPattern(int x, int y){
 	return tmp;
 }
 
+//Mueve el piolin de acuerdo a los clicks del mouse,  regresa los piolines en esas coordenadas, toma sus tipos y los cambia, tambein llama a la funcion que destruye
+//Si el cambio lo se realice se regresan a su valor original
 void BoardPiolin::MovePiolin(vector<int>* moves){
 
 	int click1 = moves->at(0);
@@ -261,6 +275,8 @@ void BoardPiolin::MovePiolin(vector<int>* moves){
 		delete pio2;
 	}
 }
+
+//Checa los piolines vacios por medio de recursividad, se forman las cadenas de piolines PARA SER ELIMINADOS
 void BoardPiolin::PiolinBro(int x, int y, list<Piolin*>* partners){
 
 	if (x >= 0 && y >= 0)
@@ -313,6 +329,7 @@ void BoardPiolin::PiolinBro(int x, int y, list<Piolin*>* partners){
 		}
 
 }
+//toma los tipos de piolines los mete a una lista y si es mayor su tamano a 3 cambia su tipo a 0 para despues eliminarlo, sino regresan a su posicion original
 void BoardPiolin::DestructPatternsPiolin(int x, int y, Piolin* pio1, Piolin* pio2){
 
 	char n = pio1->GetType();
@@ -329,11 +346,11 @@ void BoardPiolin::DestructPatternsPiolin(int x, int y, Piolin* pio1, Piolin* pio
 		score += 10;
 		for (Piolin* piolin : piolines){
 			
-			piolin->SetType('0');
+			piolin->SetType(0);
 		}
 		for (Piolin* piolin : piolines){
 
-			if (piolin->GetType() == '0')
+			if (piolin->GetType() == 0)
 			{
 
 				RearrangePiolines(piolin->GetX(), piolin->GetY(), EmptyPiolines(piolin->GetX(), piolin->GetY()));
@@ -346,15 +363,18 @@ void BoardPiolin::DestructPatternsPiolin(int x, int y, Piolin* pio1, Piolin* pio
 		pio2->SetType(n);
 	}
 }
+//Regresa las casillas 0, dejandonos saber gemas van a ser cambiadas
 int BoardPiolin::EmptyPiolines(int x, int y){
 
 	if (y >= 0 && y < CellsLength){
 
-		if (GetPiolin(x, y)->GetType() == '0')
+		if (GetPiolin(x, y)->GetType() == 0)
 			return 1 + EmptyPiolines(x, y - 1);
 	}
 	return 0;
 }
+
+//Reacomoda los piolines con tipos 0 para que obtengan un valor
 void BoardPiolin::RearrangePiolines(int x, int y, int i){
 
 	if (y < CellsLength && x < CellsLength)
@@ -392,6 +412,7 @@ void BoardPiolin::RearrangePiolines(int x, int y, int i){
 			delete pio2;
 		}
 }
+//Cambia a los piolines a no visitados
 void BoardPiolin::OutOfRangePiolines(){
 
 	for (int x = 0; x < CellsLength; x++) {
