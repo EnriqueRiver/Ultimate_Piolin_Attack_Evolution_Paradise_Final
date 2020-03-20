@@ -311,6 +311,19 @@ void Board::PlayerMove(vector<int>* moves)
 
 		}
 
+		char n = pio1->GetType();
+		char m = pio2->GetType();
+
+		if (pio1->Contiguous(*pio2))
+		{
+			pio1 -> SetType(m);
+			pio2-> SetType(n);
+		}
+		else
+		{
+			pio1->SetType(m);
+			pio2->SetType(n);
+		}
 		pio1 = 0;
 		pio2 = 0;
 		delete pio1;
@@ -323,8 +336,10 @@ void Board::PlayerMove(vector<int>* moves)
 void Board::DestoyPiolin(int x, int y, Piolin* pio1, Piolin* pio2)
 {
 	//Swap;
-	*pio1 >> pio2;
-
+	char n = pio1->GetType();
+	char m = pio2->GetType();
+	pio1->SetType(n);
+	pio2->SetType(m);
 
 	list<Piolin*> piolines = GetPartnerPiolin(x, y);
 	if (piolines.size() >= 3)
@@ -347,7 +362,8 @@ void Board::DestoyPiolin(int x, int y, Piolin* pio1, Piolin* pio2)
 	}
 	else
 	{
-		*pio1 >> pio2;
+		pio1->SetType(m);
+		pio2->SetType(n);
 	}
 }
 

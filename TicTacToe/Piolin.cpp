@@ -34,7 +34,7 @@ bool Piolin::operator==(Piolin pio)
 
 char Piolin::GetType()
 {
-	return type;	return 0;
+	return type;	
 }
 
 void Piolin::SetType(char n_type)
@@ -62,7 +62,7 @@ void Piolin::operator>>(Piolin* gem)
 
 bool Piolin::Contiguous(Piolin gem)
 {
-	return 0;
+	return 1;
 }
 
 void Piolin::GenerateNewType()
