@@ -366,13 +366,14 @@ void Board::DestoyPiolin(int x, int y, Piolin* pio1, Piolin* pio2)
 	char m = pio2->GetType();
 	Piolin* piolin1 = GetPiolinAt(x, y);
 	Piolin* piolin2 = GetPiolinAt(x, y);
+	if (pio1->GetType() != piolin1->GetType())
+		if (pio2->GetType() != piolin2->GetType())
+			DestoyPiolin(x, y, pio1, pio2);
 	pio1->SetType(n);
 	pio2->SetType(m);
 
 
-	if (pio1->GetType() == piolin1->GetType())
-		if (pio2->GetType() == piolin2->GetType())
-			DestoyPiolin(x, y, pio1, pio2);
+
 	
 
 	list<Piolin*> piolines = GetPartnerPiolin(x, y);
@@ -397,8 +398,8 @@ void Board::DestoyPiolin(int x, int y, Piolin* pio1, Piolin* pio2)
 	else
 	{
 
-		//pio1->SetType(m);
-		//pio2->SetType(n);
+		pio1->SetType(m);
+		pio2->SetType(n);
 	}
 }
 

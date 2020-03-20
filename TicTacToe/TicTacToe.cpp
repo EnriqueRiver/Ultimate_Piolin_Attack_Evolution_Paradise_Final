@@ -178,13 +178,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				if (moves.size() >= 2)
 				{
 					gameB.PlayerMove(&moves);
+
 				}
 			}
-			if (paint == false && index == -1)
-			{
-				paint = true;
+			//if (paint == false && index == -1)
+			//{
+			//	paint = true;
 
-			}
+			//}
 		}
 		break;
 	}
@@ -203,18 +204,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 
 		PAINTSTRUCT ps;
-		RECT rc;
 		HDC hdc = BeginPaint(hWnd, &ps);
+		RECT rc;
 		Gdiplus::Graphics gf(hdc);
-		gameB.DrawBoard(hWnd, hdc, &rc, &gf, false);
-		if (paint == false)
-		{
-			gameB.DrawBoard(hWnd, hdc, &rc, &gf,false);
-			//if (gameB.GetCell(hWnd, index, &rect))
-			//{
-			//	DrawIcon(hdc, rect.left + gameB.GetCellSize / 2 - 16, rect.top + CELL_SIZE / 2 - 16, hIcon1);
-			//}
-		}
+		gameB.DrawBoard(hWnd, hdc, &rc, &gf, true);
+
 		if (paint == true)
 		{
 			gameB.DrawBoard(hWnd, hdc, &rc, &gf,true);
