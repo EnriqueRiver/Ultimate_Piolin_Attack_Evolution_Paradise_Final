@@ -5,35 +5,20 @@ class Piolin
 {
 private:
 	int x, y;
-	char type;
+	int type;
 	bool visited;
 
 public:
 
 	Piolin();
-
-	bool operator==(Piolin gem);
-
-	void SetPos(int, int);
-
-	int GetX();
-
-	int GetY();
-
-	char GetType();
-
-	void SetType(char);
-
-	bool Visited();
-
+	void SetPos(int xPos, int yPos);
+	void SetType(int caseType);
 	void SetVisited(bool);
-
-	//Swap type de dos gemas
-	void operator>>(Piolin* gem);
-
-	bool Contiguous(Piolin gem);
-
+	int GetX();
+	int GetY();
+	char GetType();
+	bool GetVisited();
 	void GenerateNewType();
-
+	bool operator==(Piolin pio);
 };
 

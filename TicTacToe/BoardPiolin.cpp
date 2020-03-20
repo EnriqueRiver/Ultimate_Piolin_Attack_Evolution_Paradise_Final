@@ -114,26 +114,26 @@ void BoardPiolin::DefinePiolin(RECT* rc, Gdiplus::Graphics* graphics,HDC hdc){
 			Piolin* pio = GetPiolin(x, y);
 			switch (pio->GetType()){
 
-			case '0':
+			case 0:
 				break;
-			case 'r':{
+			case 1:{
 				Gdiplus::Bitmap bmp0(L"piolin-corazon.jpg");
-				graphics->DrawImage(&bmp0, (int)rc->left + CellSize * x, (int)rc->top + CellSize * y, 100, 100);
+				graphics->DrawImage(&bmp0, rc->left + CellSize * x, rc->top + CellSize * y, 100, 100);
 			}
 			break;
-			case 'v':{
+			case 2:{
 				Gdiplus::Bitmap bmp0(L"piolinkarate.png");
-				graphics->DrawImage(&bmp0, (int)rc->left + CellSize *x , (int)rc->top + CellSize *y, 100, 100);
+				graphics->DrawImage(&bmp0, rc->left + CellSize *x , rc->top + CellSize *y, 100, 100);
 			}
 			break;
-			case 'a':{
+			case 3:{
 				Gdiplus::Bitmap bmp0(L"piolinmamado.png");
-				graphics->DrawImage(&bmp0, (int)rc->left + CellSize * x, (int)rc->top + CellSize * y, 100, 100);
+				graphics->DrawImage(&bmp0, rc->left + CellSize * x, rc->top + CellSize * y, 100, 100);
 			}
 			break;
-			case 'b':{
+			case 4:{
 				Gdiplus::Bitmap bmp0(L"piolinssj.png");
-				graphics->DrawImage(&bmp0, (int)rc->left + CellSize * x, (int)rc->top + CellSize * y, 100, 100);
+				graphics->DrawImage(&bmp0, rc->left + CellSize * x, rc->top + CellSize * y, 100, 100);
 			}
 			break;
 			default:
@@ -242,7 +242,6 @@ void BoardPiolin::MovePiolin(vector<int>* moves){
 		char n = pio1->GetType();
 		char m = pio2->GetType();
 
-		//Si estan contiguas
 		if(c1X <= c2X + 1)
 			if(c1X >= c2X - 1)
 				if(c1Y <= c2Y + 1)
@@ -270,7 +269,7 @@ void BoardPiolin::PiolinBro(int x, int y, list<Piolin*>* partners){
 			try{
 
 				Piolin* pio = GetPiolin(x, y);
-				if (!pio->Visited()){
+				if (!pio->GetVisited()){
 
 					pio->SetVisited(true);
 					partners->push_back(pio);
@@ -336,7 +335,7 @@ void BoardPiolin::DestructPatternsPiolin(int x, int y, Piolin* pio1, Piolin* pio
 
 			if (piolin->GetType() == '0')
 			{
-				//ConvertirPiolines(x, y);
+
 				RearrangePiolines(piolin->GetX(), piolin->GetY(), EmptyPiolines(piolin->GetX(), piolin->GetY()));
 			}
 		}
@@ -371,7 +370,11 @@ void BoardPiolin::RearrangePiolines(int x, int y, int i){
 					pio1 = GetPiolin(x, y - a);
 					pio2 = GetPiolin(x, y - a - i);
 
-					*pio2 >> pio1;
+					char n = pio1->GetType();
+					char m = pio2->GetType();
+					pio1->SetType(m);
+					pio2->SetType(n);
+
 
 					pio2->GenerateNewType();
 				}
@@ -391,9 +394,12 @@ void BoardPiolin::RearrangePiolines(int x, int y, int i){
 }
 void BoardPiolin::OutOfRangePiolines(){
 
-	for (int x = 0; x < CellsLength; x++)
-		for (int y = 0; y < CellsLength; y++)
+	for (int x = 0; x < CellsLength; x++) {
+		for (int y = 0; y < CellsLength; y++) {
+
 			GetPiolin(x, y)->SetVisited(false);
+		}
+	}
 }
 
 

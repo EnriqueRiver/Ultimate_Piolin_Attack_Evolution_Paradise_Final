@@ -1,90 +1,69 @@
 #include "Piolin.h"
 
-Piolin::Piolin()
-{
-	type = '0';
-	visited = false;
+Piolin::Piolin(){
+
 	x = -1;
 	y = -1;
+	type = 0;
+	visited = false;
 }
+void Piolin::SetPos(int xPos, int yPos){
 
-
-void Piolin::SetPos(int _x, int _y)
-{
-	x = _x;
-	y = _y;
+	x = xPos;
+	y = yPos;
 }
+void Piolin::SetType(int caseType){
 
-int Piolin::GetX()
-{
-	return x;
+	type = caseType;
 }
+void Piolin::SetVisited(bool state){
 
-int Piolin::GetY()
-{
-	return y;
-}
-bool Piolin::operator==(Piolin pio)
-{
-	if (type == pio.GetType())
-		return true;
-	else
-		return false;
-}
-
-char Piolin::GetType()
-{
-	return type;	
-}
-
-void Piolin::SetType(char n_type)
-{
-	type = n_type;
-}
-
-bool Piolin::Visited()
-{
-	return visited;
-}
-
-void Piolin::SetVisited(bool state)
-{
 	visited = state;
 }
+int Piolin::GetX(){
 
-void Piolin::operator>>(Piolin* gem)
-{
-	char tmp;
-	tmp = type;
-	SetType(gem->GetType());
-	gem->SetType(tmp);
+	return x;
 }
+int Piolin::GetY(){
 
-bool Piolin::Contiguous(Piolin gem)
-{
-	return 1;
+	return y;
 }
+char Piolin::GetType(){
 
-void Piolin::GenerateNewType()
-{
+	return type;	
+}
+bool Piolin::GetVisited(){
+
+	return visited;
+}
+void Piolin::GenerateNewType(){
+
 	int tmp = rand() % 4;
 
-	switch (tmp)
-	{
+	switch (tmp){
 	case 0:
-		type = 'r';
+		type = 1;
 		break;
 	case 1:
-		type = 'v';
+		type = 2;
 		break;
 	case 2:
-		type = 'a';
+		type = 3;
 		break;
 	case 3:
-		type = 'b';
+		type = 4;
 		break;
 	default:
-		type = '0';
+		type = 0;
 		break;
+	}
+}
+bool Piolin::operator==(Piolin pio){
+
+	if (type == pio.GetType()){
+		return true;
+	}
+	else {
+		return false;
 	}
 }
