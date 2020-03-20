@@ -8,7 +8,7 @@
 
 
 #define MAX_LOADSTRING 100
-
+void Draw(HDC hdc, int xpos, int ypos, Gdiplus::Bitmap bmp);
 // Global Variables:
 HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
@@ -43,6 +43,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_TICTACTOE));
 	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+	ULONG_PTR gdiplusToken;
+	Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
 	MSG msg;
 
 	// Main message loop:
@@ -100,8 +102,6 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
 	hInst = hInstance; // Store instance handle in our global variable
-	HWND hMenuWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
 	HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
 	//if (hMenuWnd)
@@ -188,16 +188,6 @@ BOOL GetCell(HWND hWnd, int index, RECT * pRect)
 	}
 }
 
-LRESULT CALLBACK WndProcMenu(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	switch (message)
-	{
-	default:
-		return DefWindowProc(hWnd, message, wParam, lParam);
-	}
-
-}
-
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
@@ -263,34 +253,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			{
 				WCHAR temp[100];
 				wsprintf(temp, L"[%d]", index);
-				for (index; index < 64; index++)
-				{
-					RECT rect;
-					if (GetCell(hWnd, index, &rect))
-					{
-
-						int v1 = rand() % 4;
-						if (v1 == 0)
-							DrawIcon(hdc, rect.left + CELL_SIZE / 2 - 16, rect.top + CELL_SIZE / 2 - 16, hIcon1);
-						if (v1 == 1)
-							DrawIcon(hdc, rect.left + CELL_SIZE / 2 - 16, rect.top + CELL_SIZE / 2 - 16, hIcon2);
-						if (v1 == 2)
-							DrawIcon(hdc, rect.left + CELL_SIZE / 2 - 16, rect.top + CELL_SIZE / 2 - 16, hIcon4);
-						if (v1 == 3)
-							DrawIcon(hdc, rect.left + CELL_SIZE / 2 - 16, rect.top + CELL_SIZE / 2 - 16, hIcon3);
-						// int GetNumber(HWND hWnd, int x, int y)
-
-
-					}
-				}
+				
 			}
-			for (unsigned short i = 0; i < 9; i++)
-			{
-				//verticales
-				DrawLine(hdc, rc.left + CELL_SIZE * i, rc.top, rc.left + CELL_SIZE * i, rc.bottom);
-				//horizontales
-				DrawLine(hdc, rc.left, rc.top + CELL_SIZE * i, rc.right, rc.top + CELL_SIZE * i);
-			}
+			
 				}
 				RECT rect;
 				if (GetCell(hWnd, index, &rect))
@@ -320,6 +285,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	break;
 	case WM_PAINT:
 	{
+	
 		PAINTSTRUCT ps;
 		HDC hdc = BeginPaint(hWnd, &ps);
 		if (paint == false)
@@ -355,13 +321,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 						int v1 = rand() % 4;
 						if (v1 == 0)
-							DrawIcon(hdc, rect.left + CELL_SIZE / 2 - 16, rect.top + CELL_SIZE / 2 - 16, hIcon1);
+							Draw(hdc, rect.left + CELL_SIZE / 2 - 16, rect.top + CELL_SIZE / 2 - 16, L"piolin-corazon.jpg");
 						if (v1 == 1)
-							DrawIcon(hdc, rect.left + CELL_SIZE / 2 - 16, rect.top + CELL_SIZE / 2 - 16, hIcon2);
+							Draw(hdc, rect.left + CELL_SIZE / 2, rect.top + CELL_SIZE / 2, L"piolinkarate.png");
 						if (v1 == 2)
-							DrawIcon(hdc, rect.left + CELL_SIZE / 2 - 16, rect.top + CELL_SIZE / 2 - 16, hIcon4);
+							Draw(hdc, rect.left + CELL_SIZE / 2 - 16, rect.top + CELL_SIZE / 2 - 16, L"piolinssj.png");
 						if (v1 == 3)
-							DrawIcon(hdc, rect.left + CELL_SIZE / 2 - 16, rect.top + CELL_SIZE / 2 - 16, hIcon3);
+							Draw(hdc, rect.left + CELL_SIZE / 2 - 16, rect.top + CELL_SIZE / 2 - 16, L"piolinmamado.png");
 						// int GetNumber(HWND hWnd, int x, int y)
 
 
@@ -393,6 +359,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	return 0;
 	}
 
+	void Draw(HDC hdc, int xpos, int ypos, Gdiplus::Bitmap bmp)
+	{
+		Gdiplus::Graphics gf(hdc);
+		gf.DrawImage(&bmp, xpos, ypos);
+
+	}
 	// Message handler for about box.
 	INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 	{
