@@ -31,13 +31,7 @@ void Board::DrawBoard(HWND hWnd, HDC hdc, RECT* rc, Gdiplus::Graphics* graphics)
 	}
 	DrawPiolinColor(rc, graphics, hdc);
 }
-void Board::Draw(HDC hdc, int xpos, int ypos, Gdiplus::Bitmap bmp)
-{
-	Gdiplus::Graphics gf(hdc);
-	gf.DrawImage(&bmp, xpos, ypos);
 
-
-}
 
 void Board::DrawPiolinColor(RECT* rc, Gdiplus::Graphics* graphics,HDC hdc)
 {
