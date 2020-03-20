@@ -336,10 +336,10 @@ void Board::PlayerMove(vector<int>* moves)
 void Board::DestoyPiolin(int x, int y, Piolin* pio1, Piolin* pio2)
 {
 	//Swap;
-	char n = pio1->GetType();
-	char m = pio2->GetType();
-	pio1->SetType(n);
-	pio2->SetType(m);
+	//char n = pio1->GetType();
+	//char m = pio2->GetType();
+	//pio1->SetType(m);
+	//pio2->SetType(n);
 
 	list<Piolin*> piolines = GetPartnerPiolin(x, y);
 	if (piolines.size() >= 3)
@@ -362,8 +362,8 @@ void Board::DestoyPiolin(int x, int y, Piolin* pio1, Piolin* pio2)
 	}
 	else
 	{
-		pio1->SetType(m);
-		pio2->SetType(n);
+		//pio1->SetType(m);
+		//pio2->SetType(n);
 	}
 }
 
