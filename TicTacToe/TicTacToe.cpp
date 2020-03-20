@@ -1,12 +1,14 @@
 // TicTacToe.cpp : Defines the entry point for the application.
 //
-
+#include <Windows.h>
 #include "framework.h"
 #include "TicTacToe.h"
 #include "windowsx.h"
+#include <gdiplus.h>
+
 
 #define MAX_LOADSTRING 100
-
+void Draw(HDC hdc, int xpos, int ypos, Gdiplus::Bitmap bmp);
 // Global Variables:
 HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
@@ -40,7 +42,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	}
 
 	HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_TICTACTOE));
-
+	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+	ULONG_PTR gdiplusToken;
+	Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
 	MSG msg;
 
 	// Main message loop:
@@ -84,12 +88,12 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 
 	return RegisterClassExW(&wcex);
 }
-//fkjñdhsjkfhsapdhfje hfhweufh wefhiuawehfkjdsjhfhajpsfjajfbjdfsahkjdfjhdfsjpghpdgfshiiofbsdufbdsj
+
 //
 //   FUNCTION: InitInstance(HINSTANCE, int)
 //
 //   PURPOSE: Saves instance handle and creates main window
-//
+// wat=
 //   COMMENTS:
 //
 //        In this function, we save the instance handle in a global variable and
@@ -98,15 +102,16 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
 	hInst = hInstance; // Store instance handle in our global variable
-
 	HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
-
+	//if (hMenuWnd)
+	//{
+	//	hWnd = false;
+	//}
 	if (!hWnd)
 	{
 		return FALSE;
 	}
-
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
 
@@ -114,7 +119,10 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 }
 
 const int CELL_SIZE = 100;
-HICON hIcon1, hIcon2, hIcon3, hIcon4, hPrueba,hPrueba1,hPrueba2,hPrueba3;
+
+HICON hIcon1, hIcon2, hIcon3, hIcon4, hIcon5;
+bool paint = false;
+HWND button;
 
 BOOL GetGameBoardRect(HWND hWnd, RECT* pRect) {
 	RECT rc;
@@ -180,20 +188,6 @@ BOOL GetCell(HWND hWnd, int index, RECT * pRect)
 	}
 }
 
-int GetTriplets(int wins[3])
-{
-	int cells[] = { 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64};
-	return 0;
-}
-//  FUNCTION: WndProc(HWND, UINT, WPARAM, LPARAM)
-//
-//  PURPOSe: Processes messages for the main window.
-//
-//  WM_COMMAND  - process the application menu
-//  WM_PAINT    - Paint the main window
-//  WM_DESTROY  - post a quit message and return
-//
-//
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
@@ -210,6 +204,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case IDM_EXIT:
 			DestroyWindow(hWnd);
 			break;
+
+
 		default:
 			return DefWindowProc(hWnd, message, wParam, lParam);
 		}
@@ -223,6 +219,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		hIcon2 = LoadIcon(hInst, MAKEINTRESOURCE(IDI_PIOLINKARATE));
 		hIcon3 = LoadIcon(hInst, MAKEINTRESOURCE(IDI_PIOLINCOR));
 		hIcon4 = LoadIcon(hInst, MAKEINTRESOURCE(IDI_PIOLINSSJ));
+		hIcon5 = LoadIcon(hInst, MAKEINTRESOURCE(IDI_TICTACTOE));
 
 
 	}
@@ -239,6 +236,27 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			TextOut(hdc, xPos, yPos, temp, lstrlen(temp));
 			if (index != -1)
 			{
+				if (paint == false && index == 36)
+				{ 
+					paint = true;
+					DestroyIcon(hIcon5);
+
+			// TODO: Add any drawing code that uses hdc here...
+			RECT rc;
+			if (GetGameBoardRect(hWnd, &rc))
+			{
+				FillRect(hdc, &rc, (HBRUSH)GetStockObject(WHITE_BRUSH));
+				Rectangle(hdc, rc.left, rc.top, rc.right, rc.bottom);
+			}
+			int index = 0;
+			if (hdc != NULL)
+			{
+				WCHAR temp[100];
+				wsprintf(temp, L"[%d]", index);
+				
+			}
+			
+				}
 				RECT rect;
 				if (GetCell(hWnd, index, &rect))
 				{
@@ -267,51 +285,55 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	break;
 	case WM_PAINT:
 	{
+	
 		PAINTSTRUCT ps;
 		HDC hdc = BeginPaint(hWnd, &ps);
-		// TODO: Add any drawing code that uses hdc here...
-		RECT rc;
-		if (GetGameBoardRect(hWnd, &rc))
+		if (paint == false)
 		{
-			FillRect(hdc, &rc, (HBRUSH)GetStockObject(WHITE_BRUSH));
-			Rectangle(hdc, rc.left, rc.top, rc.right, rc.bottom);
-		}
-		int index = 0;
-		if (hdc != NULL)
-		{
-			WCHAR temp[100];
-			wsprintf(temp, L"[%d]", index);
-			for (index; index <64;index++)
+			int index = 36;
+			RECT rect;
+			if (GetCell(hWnd, index, &rect))
 			{
-				RECT rect;
-				if (GetCell(hWnd, index, &rect))
+				DrawIcon(hdc, rect.left + CELL_SIZE / 2 - 16, rect.top + CELL_SIZE / 2 - 16, hIcon1);
+			}
+			DrawIcon(hdc, 50, 50, hIcon5);
+		}
+		if (paint == true) 
+		{
+			DestroyIcon(hIcon5);
+			// TODO: Add any drawing code that uses hdc here...
+			RECT rc;
+			if (GetGameBoardRect(hWnd, &rc))
+			{
+				FillRect(hdc, &rc, (HBRUSH)GetStockObject(WHITE_BRUSH));
+				Rectangle(hdc, rc.left, rc.top, rc.right, rc.bottom);
+			}
+			int index = 0;
+			if (hdc != NULL)
+			{
+				WCHAR temp[100];
+				wsprintf(temp, L"[%d]", index);
+				for (index; index < 64; index++)
 				{
-					
-					int v1 = rand() % 4;
-					if (v1==0)
-						DrawIcon(hdc, rect.left + CELL_SIZE / 2 - 16, rect.top + CELL_SIZE / 2 - 16, hIcon1);
-					if (v1==1)
-						DrawIcon(hdc, rect.left + CELL_SIZE / 2 - 16, rect.top + CELL_SIZE / 2 - 16, hIcon2);
-					if(v1==2)
-						DrawIcon(hdc, rect.left + CELL_SIZE / 2 - 16, rect.top + CELL_SIZE / 2 - 16, hIcon4);
-					if(v1==3)
-						DrawIcon(hdc, rect.left + CELL_SIZE / 2 - 16, rect.top + CELL_SIZE / 2 - 16, hIcon3);
-					// int GetNumber(HWND hWnd, int x, int y)
+					RECT rect;
+					if (GetCell(hWnd, index, &rect))
+					{
+
+						int v1 = rand() % 4;
+						if (v1 == 0)
+							Draw(hdc, rect.left + CELL_SIZE / 2 - 16, rect.top + CELL_SIZE / 2 - 16, L"piolin-corazon.jpg");
+						if (v1 == 1)
+							Draw(hdc, rect.left + CELL_SIZE / 2, rect.top + CELL_SIZE / 2, L"piolinkarate.png");
+						if (v1 == 2)
+							Draw(hdc, rect.left + CELL_SIZE / 2 - 16, rect.top + CELL_SIZE / 2 - 16, L"piolinssj.png");
+						if (v1 == 3)
+							Draw(hdc, rect.left + CELL_SIZE / 2 - 16, rect.top + CELL_SIZE / 2 - 16, L"piolinmamado.png");
+						// int GetNumber(HWND hWnd, int x, int y)
 
 
+					}
 				}
 			}
-		}
-		for (int i = 0; i < 8; i++)
-		{
-			for (int j = 0; j < 8; j++)
-			{
-				if (GetNumber(hWnd, i, j) == GetNumber(hWnd,i+1,j+1))
-				{
-				}
-			}
-		}
-
 			for (unsigned short i = 0; i < 9; i++)
 			{
 				//verticales
@@ -320,6 +342,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				DrawLine(hdc, rc.left, rc.top + CELL_SIZE * i, rc.right, rc.top + CELL_SIZE * i);
 			}
 
+
+		}
 			EndPaint(hWnd, &ps);
 		}
 		break;
@@ -335,6 +359,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	return 0;
 	}
 
+	void Draw(HDC hdc, int xpos, int ypos, Gdiplus::Bitmap bmp)
+	{
+		Gdiplus::Graphics gf(hdc);
+		gf.DrawImage(&bmp, xpos, ypos);
+
+	}
 	// Message handler for about box.
 	INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 	{
