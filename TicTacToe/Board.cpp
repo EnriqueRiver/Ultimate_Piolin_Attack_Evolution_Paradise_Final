@@ -357,8 +357,6 @@ void Board::DestoyPiolin(int x, int y, Piolin* pio1, Piolin* pio2)
 				MovePiolines(piolin->GetX(), piolin->GetY(), EmptyNeighboards(piolin->GetX(), piolin->GetY()));
 			}
 		}
-
-
 	}
 	else
 	{
