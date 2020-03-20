@@ -29,10 +29,17 @@ void Board::DrawBoard(HWND hWnd, HDC hdc, RECT* rc, Gdiplus::Graphics* graphics)
 		//horizontales
 		DrawLine(hdc, rc->left, rc->top + CELL_SIZE * i, rc->right, rc->top + CELL_SIZE * i);
 	}
-	DrawPiolinColor(rc, graphics);
+	DrawPiolinColor(rc, graphics, hdc);
+}
+void Board::Draw(HDC hdc, int xpos, int ypos, Gdiplus::Bitmap bmp)
+{
+	Gdiplus::Graphics gf(hdc);
+	gf.DrawImage(&bmp, xpos, ypos);
+
+
 }
 
-void Board::DrawPiolinColor(RECT* rc, Gdiplus::Graphics* graphics)
+void Board::DrawPiolinColor(RECT* rc, Gdiplus::Graphics* graphics,HDC hdc)
 {
 	for (int x = 0; x < CELL_COUNT; x++)
 		for (int y = 0; y < CELL_COUNT; y++)
@@ -44,27 +51,32 @@ void Board::DrawPiolinColor(RECT* rc, Gdiplus::Graphics* graphics)
 				break;
 			case 'r':
 			{
-				Gdiplus::Bitmap bmp0(L"a.png");
-				graphics->DrawImage(&bmp0, (int)rc->left + 15 + CELL_SIZE * x, (int)rc->top + 15 + CELL_SIZE * y, 10, 10);
+				Gdiplus::Bitmap bmp0(L"piolin-corazon.jpg");
+				graphics->DrawImage(&bmp0, (int)rc->left + CELL_SIZE * x, (int)rc->top + CELL_SIZE * y, 100, 100);
 			}
 			break;
 			case 'v':
 			{
+
 				Gdiplus::Bitmap bmp0(L"b.png");
 				graphics->DrawImage(&bmp0, (int)rc->left + 100 + CELL_SIZE * x, (int)rc->top + 15 + CELL_SIZE * y, 10, 10);
+
+
+				Gdiplus::Bitmap bmp0(L"piolinkarate.png");
+				graphics->DrawImage(&bmp0, (int)rc->left + CELL_SIZE *x , (int)rc->top + CELL_SIZE *y, 100, 100);
 
 			}
 			break;
 			case 'a':
 			{
-				Gdiplus::Bitmap bmp0(L"c.png");
-				graphics->DrawImage(&bmp0, (int)rc->left + 15 + CELL_SIZE * x, (int)rc->top + 15 + CELL_SIZE * y, 10, 10);
+				Gdiplus::Bitmap bmp0(L"piolinmamado.png");
+				graphics->DrawImage(&bmp0, (int)rc->left + CELL_SIZE * x, (int)rc->top + CELL_SIZE * y, 100, 100);
 			}
 			break;
 			case 'b':
 			{
-				Gdiplus::Bitmap bmp0(L"d.png");
-				graphics->DrawImage(&bmp0, (int)rc->left + 15 + CELL_SIZE * x, (int)rc->top + 15 + CELL_SIZE * y, 10, 10);
+				Gdiplus::Bitmap bmp0(L"piolinssj.png");
+				graphics->DrawImage(&bmp0, (int)rc->left + CELL_SIZE * x, (int)rc->top + CELL_SIZE * y, 100, 100);
 			}
 			break;
 			default:

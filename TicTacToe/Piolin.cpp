@@ -24,9 +24,9 @@ int Piolin::GetY()
 {
 	return y;
 }
-bool Piolin::operator==(Piolin gem)
+bool Piolin::operator==(Piolin pio)
 {
-	if (type == gem.GetType())
+	if (type == pio.GetType())
 		return true;
 	else
 		return false;
