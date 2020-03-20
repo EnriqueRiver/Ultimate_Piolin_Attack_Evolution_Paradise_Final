@@ -104,10 +104,6 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	hInst = hInstance; // Store instance handle in our global variable
 	HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
-	//if (hMenuWnd)
-	//{
-	//	hWnd = false;
-	//}
 	if (!hWnd)
 	{
 		return FALSE;
@@ -117,24 +113,17 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 	return TRUE;
 }
-
-//const int CellSize = 100;
-//
-HICON hIcon5;
 bool paint = false;
 bool restart = false;
 HWND button;
 
-
-BoardPiolin gameB;
+BoardPiolin GBPiolin;
 vector<int> moves;
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	switch (message)
-	{
-	case WM_COMMAND:
-	{
+	switch (message){
+	case WM_COMMAND:{
 		int wmId = LOWORD(wParam);
 		// Parse the menu selections:
 		switch (wmId)
@@ -154,125 +143,75 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	break;
 
 	case WM_CREATE: {
-		//brush = CreateSolidBrush(RGB(230,20,30));
-		//carga de los iconos 
-	
-
 
 	}
-					break;
+	break;
 	case WM_LBUTTONDOWN: {
 		short xPos = GET_X_LPARAM(lParam);
 		short yPos = GET_Y_LPARAM(lParam);
-		int index = gameB.GetNumPiolin(hWnd, xPos, yPos);
+		//Conseguimos el index del recuadro dependiendo de su x y y.
+		int index = GBPiolin.GetNumPiolin(hWnd, xPos, yPos);
 		HDC hdc = GetDC(hWnd);
-		if (hdc != NULL)
-		{
-			WCHAR temp[100];
-			wsprintf(temp, L"[%d]", index);
-			TextOut(hdc, xPos, yPos, temp, lstrlen(temp));
-			if (paint == false && index == -1)
-			{
-				paint = true;
-				gameB.PiolinGenerator();
+		if (hdc != NULL){
+			//WCHAR temp[100];
+			//wsprintf(temp, L"[%d]", index);
+			//TextOut(hdc, xPos, yPos, temp, lstrlen(temp));
 
+			/*Este es el manejo de escenas por medio del click, cuando es verdadero crea el tablero*/
+			if (paint == false && index == -1){
+
+				paint = true;
+				GBPiolin.PiolinGenerator();
 			}
-			if (index != -1)
-			{
+			//Para saber cuando damos click dentro del tablero y almacenamos dos clicks para saber que mover.
+			if (index != -1){
 				moves.push_back(index);
-				if (moves.size() >= 2)
-				{
-					gameB.MovePiolin(&moves);
+				if (moves.size() >= 2){
+
+					GBPiolin.MovePiolin(&moves);
+					//Crea un rectangulo que especifica que parte de la ventana se va a actuaizar.
 					InvalidateRect(hWnd, nullptr, false);
 
 				}
 			}
-
-
 		}
 		break;
 	}
-	case WM_GETMINMAXINFO:
-	{
+	case WM_GETMINMAXINFO:{
 		MINMAXINFO* pMinMax = (MINMAXINFO*)lParam;
 		if (pMinMax != nullptr) {
-			pMinMax->ptMinTrackSize.x = gameB.GetCellPiolinSize() * 5;
-			pMinMax->ptMinTrackSize.y = gameB.GetCellPiolinSize() * 5;
+			pMinMax->ptMinTrackSize.x = GBPiolin.GetCellPiolinSize() * 5;
+			pMinMax->ptMinTrackSize.y = GBPiolin.GetCellPiolinSize() * 5;
 		}
 
 
 	}
 	break;
-	case WM_PAINT:
-	{
-
+	case WM_PAINT:{
 		PAINTSTRUCT ps;
 		HDC hdc = BeginPaint(hWnd, &ps);
 		RECT rc;
 		Gdiplus::Graphics gf(hdc);
-		if (gameB.Endgame == true)
-		{
-			gameB.DrawBoardPiolin(hWnd, hdc, &rc, &gf, true);
-			
+		//Este if checa si estamos en la escena Endgame
+		if (GBPiolin.Endgame == true){
+			GBPiolin.DrawBoardPiolin(hWnd, hdc, &rc, &gf, true);	
 		}
-		if (paint == false && gameB.Endgame == false) {
-			gameB.DrawBoardPiolin(hWnd, hdc, &rc, &gf, false);
+		//Este if dibua el menu.
+		if (paint == false && GBPiolin.Endgame == false) {
+			GBPiolin.DrawBoardPiolin(hWnd, hdc, &rc, &gf, false);
 			InvalidateRect(hWnd, nullptr, false);
 		}
-
-		if (paint == true)
-		{
-			gameB.DrawBoardPiolin(hWnd, hdc, &rc, &gf, true);
-			DestroyIcon(hIcon5);
-			// TODO: Add any drawing code that uses hdc here...
-			//if (PiolinBoardRect(hWnd, &rc))
-			//{
-			//	FillRect(hdc, &rc, (HBRUSH)GetStockObject(WHITE_BRUSH));
-			//	Rectangle(hdc, rc.left, rc.top, rc.right, rc.bottom);
-			//}
+		//Este if dibuja el tablero.
+		if (paint == true){
+			GBPiolin.DrawBoardPiolin(hWnd, hdc, &rc, &gf, true);
 			int index = 0;
-			if (hdc != NULL)
-			{
-				WCHAR temp[100];
-				wsprintf(temp, L"[%d]", index);
-				for (index; index < 64; index++)
-				{
-					RECT rect;
-					//if (GetCellPiolin(hWnd, index, &rect))
-					//{
-
-					//	int v1 = rand() % 4;
-					//	if (v1 == 0)
-					//		Draw(hdc, rect.left + CellSize / 2 - 40, rect.top + CellSize / 2 - 40, L"piolincorazon.png");
-					//	if (v1 == 1)
-					//		Draw(hdc, rect.left + CellSize / 2 - 40, rect.top + CellSize / 2 - 40, L"piolinkarate.png");
-					//	if (v1 == 2)
-					//		Draw(hdc, rect.left + CellSize / 2 - 40, rect.top + CellSize / 2 - 40, L"piolinssj.png");
-					//	if (v1 == 3)
-					//		Draw(hdc, rect.left + CellSize / 2 - 40, rect.top + CellSize / 2 - 40, L"piolinmamado.png");
-					//	// int GetNumPiolin(HWND hWnd, int x, int y)
-
-
-					//}
-				}
-			}
-			//for (unsigned short i = 0; i < 9; i++)
-			//{
-			//	//verticales
-			//	DrawPiolinLine(hdc, rc.left + CellSize * i, rc.top, rc.left + CellSize * i, rc.bottom);
-			//	//horizontales
-			//	DrawPiolinLine(hdc, rc.left, rc.top + CellSize * i, rc.right, rc.top + CellSize * i);
-			//}
-
-
 		}
 		EndPaint(hWnd, &ps);
 	}
 	break;
 
 	case WM_DESTROY:
-		//DestroyIcon(hIcon1);
-		//DestroyIcon(hIcon2);
+
 		PostQuitMessage(0);
 		break;
 	default:
