@@ -126,69 +126,6 @@ HICON hIcon5;
 bool paint = false;
 HWND button;
 
-//BOOL GetGameBoardRect(HWND hWnd, RECT* pRect) {
-//	RECT rc;
-//	if (GetClientRect(hWnd, &rc))
-//	{
-//		int width = rc.right - rc.left;
-//		int height = rc.bottom - rc.top;
-//		pRect->left = (width - CELL_SIZE * 8) / 2;
-//		pRect->top = (height - CELL_SIZE * 8) / 2;
-//		pRect->bottom = pRect->top + CELL_SIZE * 8;
-//		pRect->right = pRect->left + CELL_SIZE * 8;
-//		return TRUE;
-//	}
-//	SetRectEmpty(pRect);
-//	return FALSE;
-//}
-//
-//void DrawLine(HDC hdc, int xa, int ya, int xb, int yb)
-//{
-//	MoveToEx(hdc, xa, ya, nullptr);
-//	LineTo(hdc, xb, yb);
-//}
-//
-//int GetNumber(HWND hWnd, int x, int y)
-//{
-//	POINT p = { x, y };
-//	RECT rc;
-//	if (GetGameBoardRect(hWnd, &rc))
-//	{
-//		if (PtInRect(&rc, p))
-//		{
-//			x = p.x - rc.left;
-//			y = p.y - rc.top;
-//			int col = x / CELL_SIZE;
-//			int row = y / CELL_SIZE;
-//			return col + row * 8;
-//		}
-//		else
-//		{
-//			return -1;
-//		}
-//	}
-//	return -1;
-//}
-//
-//BOOL GetCell(HWND hWnd, int index, RECT * pRect)
-//{
-//	RECT board;
-//	SetRectEmpty(pRect);
-//	if (index < 0 || index > 63) return false;
-//
-//	if (GetGameBoardRect(hWnd, &board))
-//	{
-//		int y = index / 8;
-//		int x = index % 8;
-//		pRect->left = board.left + x * CELL_SIZE;
-//		pRect->top = board.top + y * CELL_SIZE;
-//
-//		pRect->right = pRect->left + CELL_SIZE;
-//		pRect->bottom = pRect->top + CELL_SIZE;
-//		return true;
-//
-//	}
-//}
 Board gameB;
 vector<int> moves;
 
