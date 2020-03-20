@@ -30,6 +30,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
 	// TODO: Place code here.
+	HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_TICTACTOE));
+	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+	ULONG_PTR gdiplusToken;
 
 	// Initialize global strings
 	LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
@@ -42,9 +45,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		return FALSE;
 	}
 
-	HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_TICTACTOE));
-	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
-	ULONG_PTR gdiplusToken;
 	Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
 	MSG msg;
 
@@ -172,6 +172,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			WCHAR temp[100];
 			wsprintf(temp, L"[%d]", index);
 			TextOut(hdc, xPos, yPos, temp, lstrlen(temp));
+			if (paint == false && index == -1)
+			{
+				paint = true;
+				gameB.GenerateNewLevel();
+
+			}
 			if (index != -1)
 			{
 				moves.push_back(index);
@@ -185,15 +191,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			{
 				if (index==-1)
 				{
-					gameB.GenerateNewLevel();
+					
 				}
 			}
 
-			if (paint == false && index == -1)
-			{
-				paint = true;
 
-			}
 		}
 		break;
 	}
