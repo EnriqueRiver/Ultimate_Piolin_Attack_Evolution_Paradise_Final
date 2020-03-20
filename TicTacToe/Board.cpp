@@ -92,21 +92,18 @@ void Board::DrawPiolinColor(RECT* rc, Gdiplus::Graphics* graphics,HDC hdc)
 		}
 		if (level2 == true && score == 50)
 		{
+			GenerateNewLevel();
 			score = 0;
 			level3 = true;
 			level2 = false;
 		}
 		if (level3 == true && score == 50)
 		{
+			GenerateNewLevel();
 			score = 0;
 			level3 = false;
 			Endgame = true;
 		}
-	}
-	if (Endgame == true)
-	{
-		Gdiplus::Bitmap bmp1(L"Endgame.png");
-		graphics->DrawImage(&bmp1, 0, 0, 1600, 800);
 	}
 	if (score == 0)
 	{
@@ -148,7 +145,11 @@ void Board::DrawPiolinColor(RECT* rc, Gdiplus::Graphics* graphics,HDC hdc)
 			default:
 				break;
 			}
-
+			if (Endgame == true)
+			{
+				Gdiplus::Bitmap bmp1(L"Endgame.png");
+				graphics->DrawImage(&bmp1, 0, 0, 1600, 800);
+			}
 			pio = 0;
 			delete pio;
 		}

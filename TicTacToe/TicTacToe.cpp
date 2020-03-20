@@ -215,7 +215,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		HDC hdc = BeginPaint(hWnd, &ps);
 		RECT rc;
 		Gdiplus::Graphics gf(hdc);
-
+		if (gameB.Endgame == true)
+		{
+			gameB.DrawBoard(hWnd, hdc, &rc, &gf, true);
+		}
+		if (paint == false && gameB.Endgame == false)
 		gameB.DrawBoard(hWnd, hdc, &rc, &gf, false);
 
 		if (paint == true)

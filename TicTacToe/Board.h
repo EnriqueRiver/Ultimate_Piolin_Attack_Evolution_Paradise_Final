@@ -17,10 +17,10 @@ private:
 	bool level1 = true;
 	bool level2;
 	bool level3;
-	bool Endgame;
+	
 public:
 	Board();
-
+	bool Endgame;
 	int score;
 
 	void Draw(HDC hdc, int xpos, int ypos, Gdiplus::Bitmap bmp);
