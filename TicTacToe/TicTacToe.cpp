@@ -236,7 +236,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			if (paint == false && index == -1)
 			{
 				paint = true;
-				DestroyIcon(hIcon5);
 
 				// TODO: Add any drawing code that uses hdc here...
 				RECT rc;
