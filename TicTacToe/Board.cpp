@@ -51,7 +51,8 @@ void Board::DrawPiolinColor(RECT* rc, Gdiplus::Graphics* graphics)
 			case 'v':
 			{
 				Gdiplus::Bitmap bmp0(L"b.png");
-				graphics->DrawImage(&bmp0, (int)rc->left + 15 + CELL_SIZE * x, (int)rc->top + 15 + CELL_SIZE * y, 10, 10);
+				graphics->DrawImage(&bmp0, (int)rc->left + 100 + CELL_SIZE * x, (int)rc->top + 15 + CELL_SIZE * y, 10, 10);
+
 			}
 			break;
 			case 'a':

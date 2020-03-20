@@ -81,7 +81,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 	wcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_TICTACTOE));
 	wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
 	//wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
-	wcex.hbrBackground = (HBRUSH)(GetStockObject(GRAY_BRUSH));
+	wcex.hbrBackground = (HBRUSH)GetStockObject(GRAY_BRUSH);
 	wcex.lpszMenuName = MAKEINTRESOURCEW(IDC_TICTACTOE);
 	wcex.lpszClassName = szWindowClass;
 	wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
@@ -101,17 +101,16 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-	hInst = hInstance; // Store instance handle in our global variable
+	hInst = hInstance; // Almacenar identificador de instancia en una variable global
+
 	HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
-	//if (hMenuWnd)
-	//{
-	//	hWnd = false;
-	//}
+
 	if (!hWnd)
 	{
 		return FALSE;
 	}
+
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
 
@@ -234,29 +233,29 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			WCHAR temp[100];
 			wsprintf(temp, L"[%d]", index);
 			TextOut(hdc, xPos, yPos, temp, lstrlen(temp));
+			if (paint == false && index == -1)
+			{
+				paint = true;
+				DestroyIcon(hIcon5);
+
+				// TODO: Add any drawing code that uses hdc here...
+				RECT rc;
+				if (GetGameBoardRect(hWnd, &rc))
+				{
+					FillRect(hdc, &rc, (HBRUSH)GetStockObject(WHITE_BRUSH));
+					Rectangle(hdc, rc.left, rc.top, rc.right, rc.bottom);
+				}
+				int index = 0;
+				if (hdc != NULL)
+				{
+					WCHAR temp[100];
+					wsprintf(temp, L"[%d]", index);
+
+				}
+
+			}
 			if (index != -1)
 			{
-				if (paint == false && index == 36)
-				{ 
-					paint = true;
-					DestroyIcon(hIcon5);
-
-			// TODO: Add any drawing code that uses hdc here...
-			RECT rc;
-			if (GetGameBoardRect(hWnd, &rc))
-			{
-				FillRect(hdc, &rc, (HBRUSH)GetStockObject(WHITE_BRUSH));
-				Rectangle(hdc, rc.left, rc.top, rc.right, rc.bottom);
-			}
-			int index = 0;
-			if (hdc != NULL)
-			{
-				WCHAR temp[100];
-				wsprintf(temp, L"[%d]", index);
-				
-			}
-			
-				}
 				RECT rect;
 				if (GetCell(hWnd, index, &rect))
 				{
@@ -294,9 +293,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			RECT rect;
 			if (GetCell(hWnd, index, &rect))
 			{
-				DrawIcon(hdc, rect.left + CELL_SIZE / 2 - 16, rect.top + CELL_SIZE / 2 - 16, hIcon1);
 			}
-			DrawIcon(hdc, 50, 50, hIcon5);
+			Draw(hdc, 0, 0, L"PiolinMenu.png");
 		}
 		if (paint == true) 
 		{
