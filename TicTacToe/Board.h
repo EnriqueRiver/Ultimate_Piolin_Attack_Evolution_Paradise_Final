@@ -21,7 +21,7 @@ public:
 
 	void Draw(HDC hdc, int xpos, int ypos, Gdiplus::Bitmap bmp);
 
-	void DrawBoard(HWND hWnd, HDC hdc, RECT* rc, Gdiplus::Graphics* graphics);
+	void DrawBoard(HWND hWnd, HDC hdc, RECT* rc, Gdiplus::Graphics* graphics, bool escena);
 
 	BOOL GetGameBoardRect(HWND hWnd, RECT* pRect);
 
@@ -50,7 +50,7 @@ public:
 	void PlayerMove(vector<int>* moves);
 
 private:
-	void DrawPiolinColor(RECT* rc, Gdiplus::Graphics* graphics,HDC hdc);
+	void DrawPiolinColor(RECT* rc, Gdiplus::Graphics* graphics, HDC hdc);
 
 	void DestoyPiolin(int, int, Piolin*, Piolin*);
 

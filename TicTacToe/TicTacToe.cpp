@@ -234,30 +234,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			WCHAR temp[100];
 			wsprintf(temp, L"[%d]", index);
 			TextOut(hdc, xPos, yPos, temp, lstrlen(temp));
-			if (index != -1)
+			if (paint == false && index == -1)
 			{
-				if (paint == false && index == 36)
-				{
-					paint = true;
-					DestroyIcon(hIcon5);
+				paint = true;
 
-					// TODO: Add any drawing code that uses hdc here...
-					//RECT rc;
-					//if (GetGameBoardRect(hWnd, &rc))
-					//{
-					//	FillRect(hdc, &rc, (HBRUSH)GetStockObject(WHITE_BRUSH));
-					//	Rectangle(hdc, rc.left, rc.top, rc.right, rc.bottom);
-					//}
-					moves.push_back(index);
-					if (moves.size() >= 2)
-					{
-						gameB.PlayerMove(&moves);
-						//gameB.GenerateNewLevel();
-
-						message = RDW_UPDATENOW;
-					}
-				}
-				ReleaseDC(hWnd, hdc);
 			}
 		}
 		break;
@@ -280,19 +260,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		RECT rc;
 		HDC hdc = BeginPaint(hWnd, &ps);
 		Gdiplus::Graphics gf(hdc);
-		gameB.DrawBoard(hWnd, hdc, &rc, &gf);
+		gameB.DrawBoard(hWnd, hdc, &rc, &gf, false);
 		if (paint == false)
 		{
-			int index = 36;
-			RECT rect;
+			gameB.DrawBoard(hWnd, hdc, &rc, &gf,false);
 			//if (gameB.GetCell(hWnd, index, &rect))
 			//{
 			//	DrawIcon(hdc, rect.left + gameB.GetCellSize / 2 - 16, rect.top + CELL_SIZE / 2 - 16, hIcon1);
 			//}
-			DrawIcon(hdc, 50, 50, hIcon5);
 		}
 		if (paint == true)
 		{
+			gameB.DrawBoard(hWnd, hdc, &rc, &gf,true);
 			DestroyIcon(hIcon5);
 			// TODO: Add any drawing code that uses hdc here...
 			//if (GetGameBoardRect(hWnd, &rc))

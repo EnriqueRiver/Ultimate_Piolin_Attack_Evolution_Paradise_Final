@@ -12,29 +12,38 @@ Board::Board()
 	GenerateNewLevel();
 }
 
-void Board::DrawBoard(HWND hWnd, HDC hdc, RECT* rc, Gdiplus::Graphics* graphics)
+void Board::DrawBoard(HWND hWnd, HDC hdc, RECT* rc, Gdiplus::Graphics* graphics,bool escena)
 {
-
-	if (GetGameBoardRect(hWnd, rc))
-	{
-		FillRect(hdc, rc, (HBRUSH)GetStockObject(WHITE_BRUSH));
-		Rectangle(hdc, rc->left, rc->top, rc->right, rc->bottom);
+	if (!escena) {
+		Gdiplus::Bitmap bmp1(L"PiolinMenu.png");
+		graphics->DrawImage(&bmp1, 0, 0, 1700, 1000);
 	}
-
-	for (unsigned short i = 0; i < CELL_COUNT + 1; i++)
+	else
 	{
-		//verticales
-		DrawLine(hdc, rc->left + CELL_SIZE * i, rc->top, rc->left + CELL_SIZE * i, rc->bottom);
 
-		//horizontales
-		DrawLine(hdc, rc->left, rc->top + CELL_SIZE * i, rc->right, rc->top + CELL_SIZE * i);
+		if (GetGameBoardRect(hWnd, rc))
+		{
+			FillRect(hdc, rc, (HBRUSH)GetStockObject(WHITE_BRUSH));
+			Rectangle(hdc, rc->left, rc->top, rc->right, rc->bottom);
+		}
+
+		for (unsigned short i = 0; i < CELL_COUNT + 1; i++)
+		{
+			//verticales
+			DrawLine(hdc, rc->left + CELL_SIZE * i, rc->top, rc->left + CELL_SIZE * i, rc->bottom);
+
+			//horizontales
+			DrawLine(hdc, rc->left, rc->top + CELL_SIZE * i, rc->right, rc->top + CELL_SIZE * i);
+		}
+		DrawPiolinColor(rc, graphics, hdc);
 	}
-	DrawPiolinColor(rc, graphics, hdc);
 }
 
 
 void Board::DrawPiolinColor(RECT* rc, Gdiplus::Graphics* graphics,HDC hdc)
 {
+	Gdiplus::Bitmap bmp1(L"PiolinMenu.png");
+	graphics->DrawImage(&bmp1,0,0, 1700, 1000);
 	for (int x = 0; x < CELL_COUNT; x++)
 		for (int y = 0; y < CELL_COUNT; y++)
 		{
